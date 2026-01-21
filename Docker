@@ -1,0 +1,23 @@
+# Use Python 3.10 slim as base
+FROM python:3.10-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements and install
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy source code
+COPY src/ src/
+COPY examples/ examples/
+COPY benchmarks/ benchmarks/
+COPY tests/ tests/
+COPY setup.py .
+
+# Install the package
+RUN pip install -e .
+
+# Set entrypoint
+ENTRYPOINT ["python"]
+CMD ["-m", "unittest", "discover", "tests"]
